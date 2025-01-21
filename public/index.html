@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliders Example</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div id="title-container">
+        <label for="page-title">Title:</label>
+        <input type="text" id="page-title" name="page-title">
+        <button id="save-button" class="action-button">Save</button>
+    </div>
+    <div id="boxes-container"></div>
+    <template id="box-template">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-title">Check 1</div>
+                <input type="datetime-local">
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Temperature: <span class="temperature-value">65</span>°F</div>
+                <input type="range" min="65" max="90" value="65" class="temperature-slider" step="1">
+            </div>
+            <!-- Add other sliders as needed -->
+        </div>
+    </template>
+    <script>
+        async function saveData() {
+            const title = document.getElementById('page-title').value.trim();
+            if (!title) {
+                alert('Please enter a title before saving.');
+                return;
+            }
+            const boxes = document.querySelectorAll('.box');
+            const data = {
+                title: title,
+                boxes: []
+            };
+            boxes.forEach(box => {
+                const boxData = {
+                    title: box.querySelector('.box-title').innerText,
+                    datetime: box.querySelector('input[type="datetime-local"]').value,
+                    sliders: {}
+                };
+                const sliders = box.querySelectorAll('input[type="range"]');
+                sliders.forEach(slider => {
+                    const sliderClass = slider.classList[0].replace('-slider', '');
+                    boxData.sliders[sliderClass] = slider.value;
+                });
+                data.boxes.push(boxData);
+            });
+            try {
+                const response = await fetch('/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await response.json();
+                alert(`Data saved as ${result.filename}`);
+            } catch (error) {
+                console.error('Error saving data:', error);
+                alert('Failed to save data');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('save-button').addEventListener('click', saveData);
+        });
+    </script>
+</body>
+</html>
