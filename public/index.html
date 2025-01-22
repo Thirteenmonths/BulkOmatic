@@ -5,7 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sliders Example</title>
     <style>
-        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #title-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        #title-container label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        #title-container input[type="text"] {
+            font-size: 14px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        .action-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .action-button:hover {
+            background-color: #45a049;
+        }
+        #boxes-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .box {
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .box-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        input[type="datetime-local"] {
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 4px;
+        }
+        .slider-container {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .slider-title {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            position: relative;
+            z-index: 2;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: var(--slider-thumb-color, #4CAF50);
+            cursor: pointer;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            position: relative;
+            z-index: 3;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            background: var(--slider-thumb-color, #4CAF50);
+            cursor: pointer;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            position: relative;
+            z-index: 3;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 10px;
+        }
+        .ideal-range {
+            position: absolute;
+            top: 40%;
+            height: 20px;
+            border: 2px dotted green;
+            background-color: rgba(144, 238, 144, 0.3);
+            z-index: 1;
+            transform: translateY(-20%);
+        }
     </style>
 </head>
 <body>
@@ -14,7 +143,9 @@
         <input type="text" id="page-title" name="page-title">
         <button id="save-button" class="action-button">Save</button>
     </div>
+
     <div id="boxes-container"></div>
+
     <template id="box-template">
         <div class="box">
             <div class="box-header">
@@ -23,23 +154,153 @@
             </div>
             <div class="slider-container">
                 <div class="slider-title">Temperature: <span class="temperature-value">65</span>°F</div>
-                <input type="range" min="65" max="90" value="65" class="temperature-slider" step="1">
+                <div class="ideal-range" style="left: calc((78 - 65) / (90 - 65) * 100%); width: calc((82 - 78) / (90 - 65) * 100%);"></div>
+                <input type="range" min="65" max="90" value="65" class="temperature-slider" step="1" data-ideal-min="78" data-ideal-max="82">
+                <div class="slider-labels">
+                    <span>65°F</span>
+                    <span>70°F</span>
+                    <span>75°F</span>
+                    <span>80°F</span>
+                    <span>85°F</span>
+                    <span>90°F</span>
+                </div>
             </div>
-            <!-- Add other sliders as needed -->
+            <div class="slider-container">
+                <div class="slider-title">Percent Rise: <span class="percent-rise-value">0</span>%</div>
+                <div class="ideal-range" style="left: calc((20 - 0) / (100 - 0) * 100%); width: calc((30 - 20) / (100 - 0) * 100%);"></div>
+                <input type="range" min="0" max="100" value="0" class="percent-rise-slider" step="1" data-ideal-min="20" data-ideal-max="30">
+                <div class="slider-labels">
+                    <span>0%</span>
+                    <span>20%</span>
+                    <span>40%</span>
+                    <span>60%</span>
+                    <span>80%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Domed on Top: <span class="domed-on-top-value">Flat</span></div>
+                <div class="ideal-range" style="left: calc((1 - 0) / (4 - 0) * 100%); width: calc((3 - 1) / (4 - 0) * 100%);"></div>
+                <input type="range" min="0" max="4" value="0" class="domed-on-top-slider" step="0.01" data-ideal-min="1" data-ideal-max="3">
+                <div class="slider-labels">
+                    <span>Flat</span>
+                    <span>Low</span>
+                    <span>High</span>
+                    <span>Deflated</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Bubbles on Top: <span class="bubbles-on-top-value">None</span></div>
+                <div class="ideal-range" style="left: calc((1 - 0) / (3 - 0) * 100%); width: calc((2 - 1) / (3 - 0) * 100%);"></div>
+                <input type="range" min="0" max="3" value="0" class="bubbles-on-top-slider" step="0.01" data-ideal-min="1" data-ideal-max="2">
+                <div class="slider-labels">
+                    <span>None</span>
+                    <span>Few</span>
+                    <span>Many</span>
+                    <span>Deflated</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Bubbles on Sides: <span class="bubbles-on-sides-value">None</span></div>
+                <div class="ideal-range" style="left: calc((1 - 0) / (3 - 0) * 100%); width: calc((2 - 1) / (3 - 0) * 100%);"></div>
+                <input type="range" min="0" max="3" value="0" class="bubbles-on-sides-slider" step="0.01" data-ideal-min="1" data-ideal-max="2">
+                <div class="slider-labels">
+                    <span>None</span>
+                    <span>Few</span>
+                    <span>Many</span>
+                    <span>Deflated</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Wobble Test: <span class="wobble-test-value">Stiff</span></div>
+                <div class="ideal-range" style="left: calc((0.5 - 0) / (2 - 0) * 100%); width: calc((1.5 - 0.5) / (2 - 0) * 100%);"></div>
+                <input type="range" min="0" max="2" value="0" class="wobble-test-slider" step="0.01" data-ideal-min="0.5" data-ideal-max="1.5">
+                <div class="slider-labels">
+                    <span>Stiff</span>
+                    <span>Loose and Aerated</span>
+                    <span>Liquified</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Windowpane: <span class="windowpane-value">Thick and Stiff</span></div>
+                <div class="ideal-range" style="left: calc((0.5 - 0) / (2 - 0) * 100%); width: calc((1.5 - 0.5) / (2 - 0) * 100%);"></div>
+                <input type="range" min="0" max="2" value="0" class="windowpane-slider" step="0.01" data-ideal-min="0.5" data-ideal-max="1.5">
+                <div class="slider-labels">
+                    <span>Thick and Stiff</span>
+                    <span>Strong and Translucent</span>
+                    <span>Weak</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-title">Smell: <span class="smell-value">Floury</span></div>
+                <div class="ideal-range" style="left: calc((1 - 0) / (4 - 0) * 100%); width: calc((3 - 1) / (4 - 0) * 100%);"></div>
+                <input type="range" min="0" max="4" value="0" class="smell-slider" step="0.01" data-ideal-min="1" data-ideal-max="3">
+                <div class="slider-labels">
+                    <span>Floury</span>
+                    <span>Ripe</span>
+                    <span>Sweet</span>
+                    <span>Acidic</span>
+                    <span>Starter-like</span>
+                </div>
+            </div>
         </div>
     </template>
+
     <script>
+        const domedOnTopValues = ["Flat", "Low", "High", "Deflated"];
+        const bubblesOnTopValues = ["None", "Few", "Many", "Deflated"];
+        const bubblesOnSidesValues = ["None", "Few", "Many", "Deflated"];
+        const wobbleTestValues = ["Stiff", "Loose and Aerated", "Liquified"];
+        const windowpaneValues = ["Thick and Stiff", "Strong and Translucent", "Weak"];
+        const smellValues = ["Floury", "Ripe", "Sweet", "Acidic", "Starter-like"];
+
+        function updateSliderValue(slider, valueElement) {
+            const idealMin = parseFloat(slider.getAttribute('data-ideal-min'));
+            const idealMax = parseFloat(slider.getAttribute('data-ideal-max'));
+            valueElement.innerText = slider.value;
+
+            // Update the color of the slider handle
+            if (slider.value < idealMin || slider.value > idealMax) {
+                slider.style.setProperty('--slider-thumb-color', 'red');
+            } else {
+                slider.style.setProperty('--slider-thumb-color', '#4CAF50');
+            }
+
+            // Update the specific value text for sliders with specific value names
+            if (valueElement.classList.contains("domed-on-top-value")) {
+                valueElement.innerText = domedOnTopValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("bubbles-on-top-value")) {
+                valueElement.innerText = bubblesOnTopValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("bubbles-on-sides-value")) {
+                valueElement.innerText = bubblesOnSidesValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("wobble-test-value")) {
+                valueElement.innerText = wobbleTestValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("windowpane-value")) {
+                valueElement.innerText = windowpaneValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("smell-value")) {
+                valueElement.innerText = smellValues[Math.round(slider.value)];
+            }
+        }
+
+        function initializeSlider(slider) {
+            const valueElement = slider.parentElement.querySelector(`.${slider.classList[0].replace("slider", "value")}`);
+            updateSliderValue(slider, valueElement);
+            slider.addEventListener('input', () => updateSliderValue(slider, valueElement));
+        }
+
         async function saveData() {
             const title = document.getElementById('page-title').value.trim();
             if (!title) {
                 alert('Please enter a title before saving.');
                 return;
             }
+
             const boxes = document.querySelectorAll('.box');
             const data = {
                 title: title,
                 boxes: []
             };
+
             boxes.forEach(box => {
                 const boxData = {
                     title: box.querySelector('.box-title').innerText,
@@ -53,6 +314,7 @@
                 });
                 data.boxes.push(boxData);
             });
+
             try {
                 const response = await fetch('/save', {
                     method: 'POST',
@@ -61,9 +323,11 @@
                     },
                     body: JSON.stringify(data)
                 });
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+
                 const result = await response.json();
                 alert(`Data saved as ${result.filename}`);
             } catch (error) {
@@ -71,7 +335,20 @@
                 alert('Failed to save data');
             }
         }
-        document.addEventListener('DOMContentLoaded', () => {
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const template = document.getElementById('box-template');
+            const container = document.getElementById('boxes-container');
+
+            for (let i = 0; i < 8; i++) {
+                const clone = document.importNode(template.content, true);
+                clone.querySelector('.box-title').innerText = `Check ${i + 1}`;
+                container.appendChild(clone);
+            }
+
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => initializeSlider(slider));
+
             document.getElementById('save-button').addEventListener('click', saveData);
         });
     </script>
