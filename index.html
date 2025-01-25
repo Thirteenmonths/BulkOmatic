@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sliders Example</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sliders Example (Unique Box Keys)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,32 +18,31 @@
             width: 100%;
             max-width: 1200px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
+            justify-content: space-between; /* Ensure elements are aligned horizontally */
             margin-bottom: 20px;
         }
         .header label {
             font-size: 16px;
-            margin-bottom: 5px;
+            margin-right: 10px; /* Add margin for spacing */
         }
         .header input[type="text"] {
             font-size: 16px;
             padding: 10px;
-            margin-bottom: 10px;
-            width: 100%;
-            max-width: 400px;
+            width: 300px; /* Set a fixed width */
         }
         .buttons-container {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            align-items: center; /* Vertical center alignment */
         }
         /* Container to hold the boxes */
         #boxes-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr); /* Exactly 4 columns */
             gap: 20px; /* Reduced gap between boxes */
-            width: 80%; /* Use 80% of the screen width */
+            width: 90%; /* Use 90% of the screen width */
             max-width: 1200px; /* Optional: limit maximum width for better layout control */
         }
         .box {
@@ -121,14 +120,23 @@
         <label for="title">Title:</label>
         <input type="text" id="title" placeholder="Enter Title">
         <div class="buttons-container">
+            <!-- Save button -->
             <button id="saveButton">Save</button>
-            <button id="clearButton">Clear Fields</button>
-            <button id="loadDataButton">Load Data Names</button>
+
+            <!-- Dropdown for saved data -->
             <select id="savedDataList"></select>
+
+            <!-- Retrieve button -->
             <button id="retrieveDataButton">Retrieve Data</button>
+
+            <!-- Clear Fields -->
+            <button id="clearButton">Clear Fields</button>
+
+            <!-- Delete Data -->
             <button id="deleteDataButton">Delete Data</button>
         </div>
     </div>
+
     <!-- Template for a single box -->
     <template id="box-template">
         <div class="box">
@@ -144,8 +152,13 @@
                     <div class="slider-title">
                         Temperature: <span class="temperature-value">65</span>°F
                     </div>
-                    <div class="ideal-range" style="left: calc((78 - 65) / (90 - 65) * 100%); width: calc((82 - 78) / (90 - 65) * 100%);"></div>
-                    <input type="range" min="65" max="90" value="65" class="temperature-slider" step="1" data-ideal-min="78" data-ideal-max="82">
+                    <div class="ideal-range" 
+                         style="left: calc((78 - 65) / (90 - 65) * 100%); 
+                                width: calc((82 - 78) / (90 - 65) * 100%);">
+                    </div>
+                    <input type="range" min="65" max="90" value="65" 
+                           class="temperature-slider" step="1"
+                           data-ideal-min="78" data-ideal-max="82">
                     <div class="slider-labels">
                         <span>65°F</span>
                         <span>70°F</span>
@@ -159,8 +172,13 @@
                     <div class="slider-title">
                         Time: <span class="time-value">0</span> hrs
                     </div>
-                    <div class="ideal-range" style="left: calc((3.5 - 0) / (8 - 0) * 100%); width: calc((4.5 - 3.5) / (8 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="8" value="0" class="time-slider" step="0.25" data-ideal-min="3.5" data-ideal-max="4.5">
+                    <div class="ideal-range" 
+                         style="left: calc((3.5 - 0) / (8 - 0) * 100%);
+                                width: calc((4.5 - 3.5) / (8 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="8" value="0" 
+                           class="time-slider" step="0.25"
+                           data-ideal-min="3.5" data-ideal-max="4.5">
                     <div class="slider-labels">
                         <span>0 hrs</span>
                         <span>1 hr</span>
@@ -177,8 +195,13 @@
                     <div class="slider-title">
                         Percent Rise: <span class="percent-rise-value">0</span>%
                     </div>
-                    <div class="ideal-range" style="left: calc((20 - 0) / (100 - 0) * 100%); width: calc((30 - 20) / (100 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="100" value="0" class="percent-rise-slider" step="1" data-ideal-min="20" data-ideal-max="30">
+                    <div class="ideal-range" 
+                         style="left: calc((20 - 0) / (100 - 0) * 100%);
+                                width: calc((30 - 20) / (100 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="100" value="0" 
+                           class="percent-rise-slider" step="1"
+                           data-ideal-min="20" data-ideal-max="30">
                     <div class="slider-labels">
                         <span>0%</span>
                         <span>20%</span>
@@ -192,8 +215,13 @@
                     <div class="slider-title">
                         Domed on Top: <span class="domed-on-top-value">Flat</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((1 - 0) / (4 - 0) * 100%); width: calc((3 - 1) / (4 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="4" value="0" class="domed-on-top-slider" step="0.01" data-ideal-min="1" data-ideal-max="3">
+                    <div class="ideal-range"
+                         style="left: calc((1 - 0) / (4 - 0) * 100%);
+                                width: calc((3 - 1) / (4 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="4" value="0"
+                           class="domed-on-top-slider" step="0.01"
+                           data-ideal-min="1" data-ideal-max="3">
                     <div class="slider-labels">
                         <span>Flat</span>
                         <span>Low</span>
@@ -205,8 +233,13 @@
                     <div class="slider-title">
                         Bubbles on Top: <span class="bubbles-on-top-value">None</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((1 - 0) / (3 - 0) * 100%); width: calc((2 - 1) / (3 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="3" value="0" class="bubbles-on-top-slider" step="0.01" data-ideal-min="1" data-ideal-max="2">
+                    <div class="ideal-range"
+                         style="left: calc((1 - 0) / (3 - 0) * 100%);
+                                width: calc((2 - 1) / (3 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="3" value="0"
+                           class="bubbles-on-top-slider" step="0.01"
+                           data-ideal-min="1" data-ideal-max="2">
                     <div class="slider-labels">
                         <span>None</span>
                         <span>Few</span>
@@ -218,8 +251,13 @@
                     <div class="slider-title">
                         Bubbles on Sides: <span class="bubbles-on-sides-value">None</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((1 - 0) / (3 - 0) * 100%); width: calc((2 - 1) / (3 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="3" value="0" class="bubbles-on-sides-slider" step="0.01" data-ideal-min="1" data-ideal-max="2">
+                    <div class="ideal-range"
+                         style="left: calc((1 - 0) / (3 - 0) * 100%);
+                                width: calc((2 - 1) / (3 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="3" value="0"
+                           class="bubbles-on-sides-slider" step="0.01"
+                           data-ideal-min="1" data-ideal-max="2">
                     <div class="slider-labels">
                         <span>None</span>
                         <span>Few</span>
@@ -231,8 +269,13 @@
                     <div class="slider-title">
                         Wobble Test: <span class="wobble-test-value">Stiff</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((0.5 - 0) / (2 - 0) * 100%); width: calc((1.5 - 0.5) / (2 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="2" value="0" class="wobble-test-slider" step="0.01" data-ideal-min="0.5" data-ideal-max="1.5">
+                    <div class="ideal-range"
+                         style="left: calc((0.5 - 0) / (2 - 0) * 100%);
+                                width: calc((1.5 - 0.5) / (2 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="2" value="0"
+                           class="wobble-test-slider" step="0.01"
+                           data-ideal-min="0.5" data-ideal-max="1.5">
                     <div class="slider-labels">
                         <span>Stiff</span>
                         <span>Loose and Aerated</span>
@@ -243,8 +286,13 @@
                     <div class="slider-title">
                         Windowpane: <span class="windowpane-value">Thick and Stiff</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((0.5 - 0) / (2 - 0) * 100%); width: calc((1.5 - 0.5) / (2 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="2" value="0" class="windowpane-slider" step="0.01" data-ideal-min="0.5" data-ideal-max="1.5">
+                    <div class="ideal-range"
+                         style="left: calc((0.5 - 0) / (2 - 0) * 100%);
+                                width: calc((1.5 - 0.5) / (2 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="2" value="0"
+                           class="windowpane-slider" step="0.01"
+                           data-ideal-min="0.5" data-ideal-max="1.5">
                     <div class="slider-labels">
                         <span>Thick and Stiff</span>
                         <span>Strong and Translucent</span>
@@ -255,8 +303,13 @@
                     <div class="slider-title">
                         Smell: <span class="smell-value">Floury</span>
                     </div>
-                    <div class="ideal-range" style="left: calc((1 - 0) / (4 - 0) * 100%); width: calc((3 - 1) / (4 - 0) * 100%);"></div>
-                    <input type="range" min="0" max="4" value="0" class="smell-slider" step="0.01" data-ideal-min="1" data-ideal-max="3">
+                    <div class="ideal-range"
+                         style="left: calc((1 - 0) / (4 - 0) * 100%);
+                                width: calc((3 - 1) / (4 - 0) * 100%);">
+                    </div>
+                    <input type="range" min="0" max="4" value="0"
+                           class="smell-slider" step="0.01"
+                           data-ideal-min="1" data-ideal-max="3">
                     <div class="slider-labels">
                         <span>Floury</span>
                         <span>Ripe</span>
@@ -266,175 +319,258 @@
                     </div>
                 </div>
             </div>
-        </template>
+        </div>
+    </template>
 
-        <!-- Container to hold the boxes -->
-        <div id="boxes-container"></div>
-        <script>
-            const domedOnTopValues = ["Flat", "Low", "High", "Deflated"];
-            const bubblesOnTopValues = ["None", "Few", "Many", "Deflated"];
-            const bubblesOnSidesValues = ["None", "Few", "Many", "Deflated"];
-            const wobbleTestValues = ["Stiff", "Loose and Aerated", "Liquified"];
-            const windowpaneValues = ["Thick and Stiff", "Strong and Translucent", "Weak"];
-            const smellValues = ["Floury", "Ripe", "Sweet", "Acidic", "Starter-like"];
-        
-            function updateSliderValue(slider, valueElement) {
-                const idealMin = parseFloat(slider.getAttribute('data-ideal-min'));
-                const idealMax = parseFloat(slider.getAttribute('data-ideal-max'));
-                valueElement.innerText = slider.value;
-        
-                // Update the color of the slider handle
-                if (slider.value < idealMin || slider.value > idealMax) {
-                    slider.style.setProperty('--slider-thumb-color', 'red');
-                } else {
-                    slider.style.setProperty('--slider-thumb-color', '#4CAF50');
-                }
-        
-                // Update the specific value text for sliders with specific value names
-                if (valueElement.classList.contains("domed-on-top-value")) {
-                    valueElement.innerText = domedOnTopValues[Math.round(slider.value)];
-                } else if (valueElement.classList.contains("bubbles-on-top-value")) {
-                    valueElement.innerText = bubblesOnTopValues[Math.round(slider.value)];
-                } else if (valueElement.classList.contains("bubbles-on-sides-value")) {
-                    valueElement.innerText = bubblesOnSidesValues[Math.round(slider.value)];
-                } else if (valueElement.classList.contains("wobble-test-value")) {
-                    valueElement.innerText = wobbleTestValues[Math.round(slider.value)];
-                } else if (valueElement.classList.contains("windowpane-value")) {
-                    valueElement.innerText = windowpaneValues[Math.round(slider.value)];
-                } else if (valueElement.classList.contains("smell-value")) {
-                    valueElement.innerText = smellValues[Math.round(slider.value)];
-                }
+    <div id="boxes-container"></div>
+
+    <script>
+        /**************************************************
+         *   Arrays for special text-based slider values  *
+         **************************************************/
+        const domedOnTopValues = ["Flat", "Low", "High", "Deflated"];
+        const bubblesOnTopValues = ["None", "Few", "Many", "Deflated"];
+        const bubblesOnSidesValues = ["None", "Few", "Many", "Deflated"];
+        const wobbleTestValues = ["Stiff", "Loose and Aerated", "Liquified"];
+        const windowpaneValues = ["Thick and Stiff", "Strong and Translucent", "Weak"];
+        const smellValues = ["Floury", "Ripe", "Sweet", "Acidic", "Starter-like"];
+
+        /**************************************************
+         *   Helper: Get the slider's key                 *
+         **************************************************/
+        // Now looks for classes matching e.g. "temperature-slider-1"
+        // That means everything ending with `-slider-<digit(s)>`
+        function getSliderKey(slider) {
+            const match = Array.from(slider.classList).find(cls => cls.match(/-slider-\d+$/));
+            return match || 'unknown-slider';
+        }
+
+        /**************************************************
+         *   Slider update logic                          *
+         **************************************************/
+        function updateSliderValue(slider, valueElement) {
+            const sliderKey = getSliderKey(slider);
+            // console.log(`[updateSliderValue] sliderKey=${sliderKey}, value=${slider.value}`);
+
+            const idealMin = parseFloat(slider.getAttribute('data-ideal-min'));
+            const idealMax = parseFloat(slider.getAttribute('data-ideal-max'));
+
+            // Display numeric value by default
+            valueElement.innerText = slider.value;
+
+            // Update color
+            if (slider.value < idealMin || slider.value > idealMax) {
+                slider.style.setProperty('--slider-thumb-color', 'red');
+            } else {
+                slider.style.setProperty('--slider-thumb-color', '#4CAF50');
             }
-        
-            // Set the initial color of the slider handle based on the current value
-            function initializeSlider(slider) {
-                const valueElement = slider.parentElement.querySelector(`.${slider.classList[0].replace("slider", "value")}`);
+
+            // For certain sliders, show descriptive text
+            if (valueElement.classList.contains("domed-on-top-value")) {
+                valueElement.innerText = domedOnTopValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("bubbles-on-top-value")) {
+                valueElement.innerText = bubblesOnTopValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("bubbles-on-sides-value")) {
+                valueElement.innerText = bubblesOnSidesValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("wobble-test-value")) {
+                valueElement.innerText = wobbleTestValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("windowpane-value")) {
+                valueElement.innerText = windowpaneValues[Math.round(slider.value)];
+            } else if (valueElement.classList.contains("smell-value")) {
+                valueElement.innerText = smellValues[Math.round(slider.value)];
+            }
+        }
+
+        // Initialize each slider
+        function initializeSlider(slider) {
+            const sliderKey = getSliderKey(slider);
+            // Find the matching value element, e.g. "temperature-value-1"
+            const valueClass = sliderKey.replace("slider", "value");
+            const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
+
+            // Update once on page load
+            updateSliderValue(slider, valueElement);
+
+            // Update on input change
+            slider.addEventListener('input', () => {
                 updateSliderValue(slider, valueElement);
-                slider.addEventListener('input', () => updateSliderValue(slider, valueElement));
-            }
-        
-            // Clone the template and append it to the container
-            document.addEventListener('DOMContentLoaded', (event) => {
-                const template = document.getElementById('box-template');
-                const container = document.getElementById('boxes-container');
-        
-                for (let i = 0; i < 8; i++) {
-                    const clone = document.importNode(template.content, true);
-                    clone.querySelector('.sequence-number').innerText = i + 1;
-                    container.appendChild(clone);
-                }
-        
-                const sliders = document.querySelectorAll('input[type="range"]');
-                sliders.forEach(initializeSlider);
             });
-        
-            // File management functions
-            function saveSliderData() {
-                const title = document.getElementById('title').value;
-                if (!title) {
-                    alert("Please enter a title before saving.");
-                    return;
-                }
-        
-                const sliders = document.querySelectorAll('input[type="range"]');
-                const datePickers = document.querySelectorAll('.datetime-picker');
-                const data = { sliders: {}, datePickers: [] };
-        
-                sliders.forEach(slider => {
-                    data.sliders[slider.classList[0]] = slider.value;
-                });
-        
-                datePickers.forEach(picker => {
-                    data.datePickers.push(picker.value);
-                });
-        
-                const dataName = prompt("Enter a name for this data set:");
-                if (dataName) {
-                    localStorage.setItem(dataName, JSON.stringify({ title: title, data: data }));
-                    console.log('Data saved:', localStorage.getItem(dataName)); // Debugging line
-                    alert("Data saved!");
-                    loadSavedDataNames();
-                }
-            }
-        
-            function loadSliderData() {
-                const dataName = document.getElementById('savedDataList').value;
-                if (!dataName) {
-                    alert("Please select a data set to load.");
-                    return;
-                }
-        
-                const savedData = JSON.parse(localStorage.getItem(dataName));
-                console.log('Data loaded:', savedData); // Debugging line
-                const title = savedData.title;
-                const data = savedData.data;
-                document.getElementById('title').value = title;
-        
-                const sliders = document.querySelectorAll('input[type="range"]');
-                const datePickers = document.querySelectorAll('.datetime-picker');
-        
-                sliders.forEach(slider => {
-                    if (data.sliders.hasOwnProperty(slider.classList[0])) {
-                        slider.value = data.sliders[slider.classList[0]];
-                        console.log(`Setting ${slider.classList[0]} to value: ${data.sliders[slider.classList[0]]}`); // Debugging line
-                        const valueElement = slider.parentElement.querySelector(`.${slider.classList[0].replace("slider", "value")}`);
-                        updateSliderValue(slider, valueElement);
-                    }
-                });
-        
-                datePickers.forEach((picker, index) => {
-                    if (data.datePickers[index]) {
-                        picker.value = data.datePickers[index];
+        }
+
+        /**************************************************
+         *   DOMContentLoaded: Clone boxes & rename classes
+         **************************************************/
+        document.addEventListener('DOMContentLoaded', () => {
+            const template = document.getElementById('box-template');
+            const container = document.getElementById('boxes-container');
+
+            // Create 8 boxes
+            for (let i = 0; i < 8; i++) {
+                const clone = document.importNode(template.content, true);
+
+                // Update "CheckX" label
+                clone.querySelector('.sequence-number').innerText = i + 1;
+
+                // 1) Append the clone to container first
+                container.appendChild(clone);
+
+                // 2) Rename all slider classes inside THIS clone to be unique, e.g. "temperature-slider-1"
+                const rangeInputs = container
+                    .querySelectorAll('.box')[i]
+                    .querySelectorAll('input[type="range"]');
+
+                rangeInputs.forEach(rng => {
+                    // Original base class (e.g. "temperature-slider")
+                    const baseClass = Array.from(rng.classList).find(c => c.endsWith('-slider'));
+                    if (baseClass) {
+                        // Remove the old class
+                        rng.classList.remove(baseClass);
+                        // Add the new unique class
+                        rng.classList.add(`${baseClass}-${i+1}`);
+
+                        // Also rename the "value" element (e.g. "temperature-value" → "temperature-value-1")
+                        const oldValueClass = baseClass.replace('slider','value');
+                        const valEl = rng.parentElement.querySelector(`.${oldValueClass}`);
+                        if (valEl) {
+                            valEl.classList.remove(oldValueClass);
+                            valEl.classList.add(`${oldValueClass}-${i+1}`);
+                        }
                     }
                 });
             }
-        
-            function deleteSliderData() {
-                const dataName = document.getElementById('savedDataList').value;
-                if (!dataName) {
-                    alert("Please select a data set to delete.");
-                    return;
-                }
-        
-                localStorage.removeItem(dataName);
-                alert("Data deleted!");
-                loadSavedDataNames();
+
+            // Now initialize all sliders with their new unique class names
+            const allSliders = document.querySelectorAll('input[type="range"]');
+            allSliders.forEach(initializeSlider);
+
+            // Populate the dropdown with any existing localStorage titles
+            loadSavedDataNames();
+        });
+
+        /**************************************************
+         *   Saving, Loading, and Deleting Data           *
+         **************************************************/
+        function saveSliderData() {
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                alert("Please enter a title before saving.");
+                return;
             }
-        
-            function loadSavedDataNames() {
-                const savedDataList = document.getElementById('savedDataList');
-                savedDataList.innerHTML = "";
-        
-                for (let i = 0; i < localStorage.length; i++) {
-                    const dataName = localStorage.key(i);
-                    if (dataName !== null) {
-                        const option = document.createElement('option');
-                        option.value = dataName;
-                        option.textContent = dataName;
-                        savedDataList.appendChild(option);
-                    }
+
+            // Gather slider values
+            const sliders = document.querySelectorAll('input[type="range"]');
+            const datePickers = document.querySelectorAll('.datetime-picker');
+            const data = { sliders: {}, datePickers: [] };
+
+            // Store each slider under its unique key, e.g. "temperature-slider-1"
+            sliders.forEach(slider => {
+                const sliderKey = getSliderKey(slider);
+                data.sliders[sliderKey] = slider.value;
+            });
+
+            datePickers.forEach(picker => {
+                data.datePickers.push(picker.value);
+            });
+
+            const objToStore = { title, data };
+            // console.log("[saveSliderData] Data to store:", objToStore);
+
+            localStorage.setItem(title, JSON.stringify(objToStore));
+            alert("Data saved!");
+            loadSavedDataNames();
+        }
+
+        function loadSavedDataNames() {
+            const savedDataList = document.getElementById('savedDataList');
+            savedDataList.innerHTML = "";
+
+            // Default prompt option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Select One";
+            savedDataList.appendChild(defaultOption);
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key !== null) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = key;
+                    savedDataList.appendChild(option);
                 }
             }
-        
-            document.getElementById('saveButton').addEventListener('click', saveSliderData);
-            document.getElementById('clearButton').addEventListener('click', () => {
-                const sliders = document.querySelectorAll('input[type="range"]');
-                sliders.forEach(slider => {
-                    slider.value = slider.min;
-                    const valueElement = slider.parentElement.querySelector(`.${slider.classList[0].replace("slider", "value")}`);
+        }
+
+        function loadSliderData() {
+            const selectedKey = document.getElementById('savedDataList').value;
+            if (!selectedKey) {
+                alert("Please select a data set to load.");
+                return;
+            }
+
+            const savedDataJSON = localStorage.getItem(selectedKey);
+            if (!savedDataJSON) {
+                alert("No data found for the selected title.");
+                return;
+            }
+
+            const savedData = JSON.parse(savedDataJSON);
+            const { title, data } = savedData;
+
+            // Set the Title field
+            document.getElementById('title').value = title;
+
+            // Update each slider from stored data
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                const sliderKey = getSliderKey(slider);
+                if (data.sliders.hasOwnProperty(sliderKey)) {
+                    slider.value = data.sliders[sliderKey];
+                    // Reflect the new value visually
+                    const valueClass = sliderKey.replace("slider", "value");
+                    const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
                     updateSliderValue(slider, valueElement);
-                });
-        
-                const datePickers = document.querySelectorAll('.datetime-picker');
-                datePickers.forEach(picker => picker.value = '');
+                }
             });
-        
-            document.getElementById('loadDataButton').addEventListener('click', loadSavedDataNames);
-            document.getElementById('retrieveDataButton').addEventListener('click', loadSliderData);
-            document.getElementById('deleteDataButton').addEventListener('click', deleteSliderData);
-        
-            // Load data names on page load
-            document.addEventListener('DOMContentLoaded', loadSavedDataNames);
-        </script>
-    </body>
-    </html>
+
+            // Update date/time pickers
+            const datePickers = document.querySelectorAll('.datetime-picker');
+            datePickers.forEach((picker, index) => {
+                picker.value = data.datePickers[index] || "";
+            });
+        }
+
+        function deleteSliderData() {
+            const selectedKey = document.getElementById('savedDataList').value;
+            if (!selectedKey) {
+                alert("Please select a data set to delete.");
+                return;
+            }
+
+            localStorage.removeItem(selectedKey);
+            alert("Data deleted!");
+            loadSavedDataNames();
+        }
+
+        /**************************************************
+         *   Button Listeners                             *
+         **************************************************/
+        document.getElementById('saveButton').addEventListener('click', saveSliderData);
+        document.getElementById('retrieveDataButton').addEventListener('click', loadSliderData);
+        document.getElementById('deleteDataButton').addEventListener('click', deleteSliderData);
+
+        document.getElementById('clearButton').addEventListener('click', () => {
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                slider.value = slider.min;
+                const valueClass = getSliderKey(slider).replace("slider", "value");
+                const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
+                updateSliderValue(slider, valueElement);
+            });
+
+            const datePickers = document.querySelectorAll('.datetime-picker');
+            datePickers.forEach(picker => picker.value = '');
+        });
+    </script>
+</body>
+</html>
