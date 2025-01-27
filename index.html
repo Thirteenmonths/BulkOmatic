@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Observation Boxes (Middle Height, 50% Overlay Above/Below Slider)</title>
+  <title>Observation Boxes (Height=550, Larger Gap for Slider Labels)</title>
 
-  <!-- Roboto font for readability -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" 
+  <!-- Roboto font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
     rel="stylesheet"
   />
 
   <style>
-    /* Base reset & body */
+    /* Basic reset & body */
     * {
       box-sizing: border-box;
     }
@@ -40,39 +40,45 @@
      ******************************************************/
     .header {
       display: flex;
+      flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 20px;
       margin-bottom: 10px;
       background-color: #fff;
       padding: 10px 15px;
       border-radius: 6px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
+
+    /* Three groups in the requested order */
+    .header .group-1,
+    .header .group-2,
+    .header .group-3 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
     .header label {
       font-size: 13px;
-      margin-right: 6px;
       font-weight: 500;
     }
     .header input[type="text"] {
       font-size: 13px;
       padding: 6px;
-      width: 240px;
+      width: 260px;
       border: 1px solid #ccc;
       border-radius: 4px;
-    }
-    .buttons-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
     }
     select#savedDataList {
       padding: 6px 8px;
       font-size: 13px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      min-width: 120px;
+      min-width: 100px;
       background-color: #fff;
     }
     button {
@@ -99,87 +105,90 @@
       width: 100%;
     }
     .box {
+      display: flex;             
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      width: 100%;
+      height: 550px;      
       background: #fff;
       border-radius: 6px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-
-      /* "Middle ground" vertical space - not too big, not too small */
-      min-height: 500px; 
-      padding: 20px;
+      padding: 10px;
+      box-sizing: border-box;
     }
 
-    /******************************************************
-     *       Box Header (Observation label, Date/Time)   *
-     ******************************************************/
     .box-header {
-      margin-bottom: 16px;
+      flex: 0 0 auto;
+      margin-bottom: 8px;
     }
     .box-header-title {
-      font-size: 16px; 
+      font-size: 15px;
       font-weight: 500;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       color: #444;
     }
     .box-header label {
       font-weight: 500;
-      font-size: 14px; 
+      font-size: 13px;
     }
     .datetime-picker {
       width: 100%;
-      max-width: 200px;
-      padding: 6px;
+      max-width: 180px;
+      padding: 4px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: 14px;
-      margin-top: 6px;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* We'll distribute the sliders in leftover space via flex */
+    .sliders-wrapper {
+      flex: 1;  
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly; /* distribute sliders vertically */
+      align-items: stretch;
+      gap: 0;
     }
 
     /******************************************************
-     *       Slider Containers (height: 50px)            *
+     *       Each Slider Container / Layout              *
      ******************************************************/
     .slider-container {
       position: relative;
-      width: 100%;
-      height: 50px;
-      margin-bottom: 16px;
+      min-height: 45px; /* was 40px, now 45px to allow bigger gap */
+      margin: 0; 
     }
-
     .slider-title {
       position: absolute;
       top: 4px;
       left: 0;
       right: 0;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 500;
       color: #444;
       margin: 0;
-      padding: 0 4px;
-    }
-    .slider-title span {
-      color: #007bff;
-      font-weight: 500;
+      padding: 0 2px;
     }
 
-    /* 
-     * The green overlay should be half above & half below the slider line
-     * If the slider line is at 50%, then top=25% & bottom=25% => 50% total
-     */
+    /* The green overlay is half the container (top:25%; bottom:25%) */
     .ideal-range {
       position: absolute;
-      left: 0; 
-      right: 0;
       top: 25%;
       bottom: 25%;
-      background-color: rgba(76, 175, 80, 0.27); /* alpha=0.27, no border */
-      z-index: 5; /* on top of track */
+      left: 0;
+      right: 0;
+      background-color: rgba(76,175,80,0.27);
+      z-index: 5;
       pointer-events: none;
     }
 
-    /* The slider track at 50% => exactly center line. z-index=2 */
+    /* The slider track at 50% => center line, z-index=2 */
     input[type="range"] {
       position: absolute;
-      top: 50%; 
-      left: 0;
+      top: 50%;
+      left: 0; 
       right: 0;
       transform: translateY(-50%);
       height: 4px;
@@ -194,64 +203,74 @@
       opacity: 1;
     }
 
-    /* Triangular thumb on top of the green overlay */
+    /* Triangular thumb on top (z-index=999) */
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       background: var(--slider-thumb-color, #4CAF50);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
       cursor: pointer;
       border: none;
       box-shadow: none;
       position: relative;
-      z-index: 6;
+      z-index: 999;
     }
     input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       background: var(--slider-thumb-color, #4CAF50);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
       cursor: pointer;
       border: none;
       box-shadow: none;
       position: relative;
-      z-index: 6;
+      z-index: 999;
     }
 
-    /* Bottom labels pinned near the container's bottom (4px), on top (z-index=7) */
+    /* 
+       The bottom labels are now pinned to bottom:0; 
+       so there's a bigger gap b/n handle & text 
+    */
     .slider-labels {
       position: absolute;
-      bottom: 4px; 
-      left: 0; 
+      bottom: 0; 
+      left: 0;
       right: 0;
       display: flex;
       justify-content: space-between;
-      font-size: 12px; 
+      font-size: 11px;
       color: #666;
       margin: 0;
-      padding: 0 4px;
+      padding: 0 2px;
       z-index: 7;
     }
   </style>
 </head>
 <body>
   <div class="page-container">
-    <!-- Header: Title, Save, Retrieve, etc. -->
+    <!-- 3 groups in the requested order:
+         1) Title label + Title + Save
+         2) DropDown + Retrieve
+         3) Clear + Delete
+    -->
     <div class="header">
-      <label for="title">Title:</label>
-      <input type="text" id="title" placeholder="Enter Title">
-      <div class="buttons-container">
+      <div class="group-1">
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter Title">
         <button id="saveButton">Save</button>
+      </div>
+      <div class="group-2">
         <select id="savedDataList"></select>
         <button id="retrieveDataButton">Retrieve Data</button>
+      </div>
+      <div class="group-3">
         <button id="clearButton">Clear Fields</button>
         <button id="deleteDataButton">Delete Data</button>
       </div>
     </div>
 
-    <!-- Template for one "Observation" box -->
+    <!-- Box Template -->
     <template id="box-template">
       <div class="box">
         <div class="box-header">
@@ -264,275 +283,214 @@
           </div>
         </div>
 
-        <!-- All 9 sliders with the updated 50px container & 50% line -->
-        <!-- Temperature -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Temperature: <span class="temperature-value">65</span>°F
+        <!-- Sliders are flexed to fill leftover vertical space -->
+        <div class="sliders-wrapper">
+          <!-- Temperature Slider -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Temperature: <span class="temperature-value">65</span>°F
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((78 - 65) / (90 - 65) * 100%);
+                   width: calc((82 - 78) / (90 - 65) * 100%);
+                 ">
+            </div>
+            <input type="range" min="65" max="90" value="65"
+                   class="temperature-slider" step="1"
+                   data-ideal-min="78" data-ideal-max="82"/>
+            <div class="slider-labels">
+              <span>65°F</span>
+              <span>70°F</span>
+              <span>75°F</span>
+              <span>80°F</span>
+              <span>85°F</span>
+              <span>90°F</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((78 - 65) / (90 - 65) * 100%);
-              width: calc((82 - 78) / (90 - 65) * 100%);
-            ">
-          </div>
-          <input 
-            type="range"
-            min="65"
-            max="90"
-            value="65"
-            class="temperature-slider"
-            step="1"
-            data-ideal-min="78"
-            data-ideal-max="82">
-          <div class="slider-labels">
-            <span>65°F</span>
-            <span>70°F</span>
-            <span>75°F</span>
-            <span>80°F</span>
-            <span>85°F</span>
-            <span>90°F</span>
-          </div>
-        </div>
 
-        <!-- Time -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Time: <span class="time-value">0</span> hrs
+          <!-- Time Slider -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Time: <span class="time-value">0</span> hrs
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((3.5 - 0) / (8 - 0) * 100%);
+                   width: calc((4.5 - 3.5) / (8 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="8" value="0"
+                   class="time-slider" step="0.25"
+                   data-ideal-min="3.5" data-ideal-max="4.5"/>
+            <div class="slider-labels">
+              <span>0 hrs</span>
+              <span>1 hr</span>
+              <span>2 hrs</span>
+              <span>3 hrs</span>
+              <span>4 hrs</span>
+              <span>5 hrs</span>
+              <span>6 hrs</span>
+              <span>7 hrs</span>
+              <span>8 hrs</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((3.5 - 0) / (8 - 0) * 100%);
-              width: calc((4.5 - 3.5) / (8 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="8"
-            value="0"
-            class="time-slider"
-            step="0.25"
-            data-ideal-min="3.5"
-            data-ideal-max="4.5">
-          <div class="slider-labels">
-            <span>0 hrs</span>
-            <span>1 hr</span>
-            <span>2 hrs</span>
-            <span>3 hrs</span>
-            <span>4 hrs</span>
-            <span>5 hrs</span>
-            <span>6 hrs</span>
-            <span>7 hrs</span>
-            <span>8 hrs</span>
-          </div>
-        </div>
 
-        <!-- Percent Rise -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Percent Rise: <span class="percent-rise-value">0</span>%
+          <!-- Percent Rise -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Percent Rise: <span class="percent-rise-value">0</span>%
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((20 - 0) / (100 - 0) * 100%);
+                   width: calc((30 - 20) / (100 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="100" value="0"
+                   class="percent-rise-slider" step="1"
+                   data-ideal-min="20" data-ideal-max="30"/>
+            <div class="slider-labels">
+              <span>0%</span>
+              <span>20%</span>
+              <span>40%</span>
+              <span>60%</span>
+              <span>80%</span>
+              <span>100%</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((20 - 0) / (100 - 0) * 100%);
-              width: calc((30 - 20) / (100 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="percent-rise-slider"
-            step="1"
-            data-ideal-min="20"
-            data-ideal-max="30">
-          <div class="slider-labels">
-            <span>0%</span>
-            <span>20%</span>
-            <span>40%</span>
-            <span>60%</span>
-            <span>80%</span>
-            <span>100%</span>
-          </div>
-        </div>
 
-        <!-- Domed on Top -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Domed on Top: <span class="domed-on-top-value">Flat</span>
+          <!-- Domed on Top -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Domed on Top: <span class="domed-on-top-value">Flat</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((1 - 0) / (4 - 0) * 100%);
+                   width: calc((3 - 1) / (4 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="4" value="0"
+                   class="domed-on-top-slider" step="0.01"
+                   data-ideal-min="1" data-ideal-max="3"/>
+            <div class="slider-labels">
+              <span>Flat</span>
+              <span>Low</span>
+              <span>High</span>
+              <span>Deflated</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((1 - 0) / (4 - 0) * 100%);
-              width: calc((3 - 1) / (4 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="4"
-            value="0"
-            class="domed-on-top-slider"
-            step="0.01"
-            data-ideal-min="1"
-            data-ideal-max="3">
-          <div class="slider-labels">
-            <span>Flat</span>
-            <span>Low</span>
-            <span>High</span>
-            <span>Deflated</span>
-          </div>
-        </div>
 
-        <!-- Bubbles on Top -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Bubbles on Top: <span class="bubbles-on-top-value">None</span>
+          <!-- Bubbles on Top -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Bubbles on Top: <span class="bubbles-on-top-value">None</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((1 - 0) / (3 - 0) * 100%);
+                   width: calc((2 - 1) / (3 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="3" value="0"
+                   class="bubbles-on-top-slider" step="0.01"
+                   data-ideal-min="1" data-ideal-max="2"/>
+            <div class="slider-labels">
+              <span>None</span>
+              <span>Few</span>
+              <span>Many</span>
+              <span>Deflated</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((1 - 0) / (3 - 0) * 100%);
-              width: calc((2 - 1) / (3 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="3"
-            value="0"
-            class="bubbles-on-top-slider"
-            step="0.01"
-            data-ideal-min="1"
-            data-ideal-max="2">
-          <div class="slider-labels">
-            <span>None</span>
-            <span>Few</span>
-            <span>Many</span>
-            <span>Deflated</span>
-          </div>
-        </div>
 
-        <!-- Bubbles on Sides -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Bubbles on Sides: <span class="bubbles-on-sides-value">None</span>
+          <!-- Bubbles on Sides -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Bubbles on Sides: <span class="bubbles-on-sides-value">None</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((1 - 0) / (3 - 0) * 100%);
+                   width: calc((2 - 1) / (3 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="3" value="0"
+                   class="bubbles-on-sides-slider" step="0.01"
+                   data-ideal-min="1" data-ideal-max="2"/>
+            <div class="slider-labels">
+              <span>None</span>
+              <span>Few</span>
+              <span>Many</span>
+              <span>Deflated</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((1 - 0) / (3 - 0) * 100%);
-              width: calc((2 - 1) / (3 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="3"
-            value="0"
-            class="bubbles-on-sides-slider"
-            step="0.01"
-            data-ideal-min="1"
-            data-ideal-max="2">
-          <div class="slider-labels">
-            <span>None</span>
-            <span>Few</span>
-            <span>Many</span>
-            <span>Deflated</span>
-          </div>
-        </div>
 
-        <!-- Wobble Test -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Wobble Test: <span class="wobble-test-value">Stiff</span>
+          <!-- Wobble Test -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Wobble Test: <span class="wobble-test-value">Stiff</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((0.5 - 0) / (2 - 0) * 100%);
+                   width: calc((1.5 - 0.5) / (2 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="2" value="0"
+                   class="wobble-test-slider" step="0.01"
+                   data-ideal-min="0.5" data-ideal-max="1.5"/>
+            <div class="slider-labels">
+              <span>Stiff</span>
+              <span>Loose and Aerated</span>
+              <span>Liquified</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((0.5 - 0) / (2 - 0) * 100%);
-              width: calc((1.5 - 0.5) / (2 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="2"
-            value="0"
-            class="wobble-test-slider"
-            step="0.01"
-            data-ideal-min="0.5"
-            data-ideal-max="1.5">
-          <div class="slider-labels">
-            <span>Stiff</span>
-            <span>Loose and Aerated</span>
-            <span>Liquified</span>
-          </div>
-        </div>
 
-        <!-- Windowpane -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Windowpane: <span class="windowpane-value">Thick and Stiff</span>
+          <!-- Windowpane -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Windowpane: <span class="windowpane-value">Thick and Stiff</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((0.5 - 0) / (2 - 0) * 100%);
+                   width: calc((1.5 - 0.5) / (2 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="2" value="0"
+                   class="windowpane-slider" step="0.01"
+                   data-ideal-min="0.5" data-ideal-max="1.5"/>
+            <div class="slider-labels">
+              <span>Thick and Stiff</span>
+              <span>Strong and Translucent</span>
+              <span>Weak</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((0.5 - 0) / (2 - 0) * 100%);
-              width: calc((1.5 - 0.5) / (2 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="2"
-            value="0"
-            class="windowpane-slider"
-            step="0.01"
-            data-ideal-min="0.5"
-            data-ideal-max="1.5">
-          <div class="slider-labels">
-            <span>Thick and Stiff</span>
-            <span>Strong and Translucent</span>
-            <span>Weak</span>
-          </div>
-        </div>
 
-        <!-- Smell -->
-        <div class="slider-container">
-          <div class="slider-title">
-            Smell: <span class="smell-value">Floury</span>
+          <!-- Smell -->
+          <div class="slider-container">
+            <div class="slider-title">
+              Smell: <span class="smell-value">Floury</span>
+            </div>
+            <div class="ideal-range"
+                 style="
+                   left: calc((1 - 0) / (4 - 0) * 100%);
+                   width: calc((3 - 1) / (4 - 0) * 100%);
+                 ">
+            </div>
+            <input type="range" min="0" max="4" value="0"
+                   class="smell-slider" step="0.01"
+                   data-ideal-min="1" data-ideal-max="3"/>
+            <div class="slider-labels">
+              <span>Floury</span>
+              <span>Ripe</span>
+              <span>Sweet</span>
+              <span>Acidic</span>
+              <span>Starter-like</span>
+            </div>
           </div>
-          <div 
-            class="ideal-range"
-            style="
-              left: calc((1 - 0) / (4 - 0) * 100%);
-              width: calc((3 - 1) / (4 - 0) * 100%);
-            ">
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="4"
-            value="0"
-            class="smell-slider"
-            step="0.01"
-            data-ideal-min="1"
-            data-ideal-max="3">
-          <div class="slider-labels">
-            <span>Floury</span>
-            <span>Ripe</span>
-            <span>Sweet</span>
-            <span>Acidic</span>
-            <span>Starter-like</span>
-          </div>
-        </div>
+        </div> <!-- end .sliders-wrapper -->
       </div> <!-- end .box -->
     </template>
 
@@ -541,7 +499,7 @@
 
   <script>
     /**************************************************
-     *   Arrays for special text-based slider values  *
+     * Arrays for special text-based slider values    *
      **************************************************/
     const domedOnTopValues = ["Flat", "Low", "High", "Deflated"];
     const bubblesOnTopValues = ["None", "Few", "Many", "Deflated"];
@@ -551,7 +509,6 @@
     const smellValues = ["Floury", "Ripe", "Sweet", "Acidic", "Starter-like"];
 
     function getSliderKey(slider) {
-      // e.g. "temperature-slider-1"
       return Array.from(slider.classList).find(cls => cls.match(/-slider-\d+$/)) || "unknown-slider";
     }
 
@@ -561,14 +518,14 @@
       const idealMax = parseFloat(slider.getAttribute('data-ideal-max'));
       valueElement.innerText = slider.value;
 
-      // color the thumb if outside range
+      // If outside ideal range => red, else green
       if (slider.value < idealMin || slider.value > idealMax) {
         slider.style.setProperty('--slider-thumb-color', 'red');
       } else {
         slider.style.setProperty('--slider-thumb-color', '#4CAF50');
       }
 
-      // For certain sliders, display descriptive text
+      // For certain sliders, show descriptive text
       if (valueElement.classList.contains("domed-on-top-value")) {
         valueElement.innerText = domedOnTopValues[Math.round(slider.value)];
       } else if (valueElement.classList.contains("bubbles-on-top-value")) {
@@ -590,9 +547,7 @@
       const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
       if (!valueElement) return;
 
-      // set initial
       updateSliderValue(slider, valueElement);
-
       slider.addEventListener('input', () => {
         updateSliderValue(slider, valueElement);
       });
@@ -605,7 +560,6 @@
       // Create 8 boxes
       for (let i = 0; i < 8; i++) {
         const clone = document.importNode(template.content, true);
-        // "Observation X"
         clone.querySelector('.sequence-number').innerText = i + 1;
         container.appendChild(clone);
 
@@ -628,14 +582,16 @@
         });
       }
 
-      // initialize all sliders
+      // Initialize all sliders
       const allSliders = document.querySelectorAll('input[type="range"]');
       allSliders.forEach(initializeSlider);
 
-      // load any localStorage keys
       loadSavedDataNames();
     });
 
+    /**************************************************
+     *   Save, Retrieve, Delete (localStorage)
+     **************************************************/
     function saveSliderData() {
       const title = document.getElementById('title').value.trim();
       if (!title) {
@@ -694,6 +650,7 @@
       const { title, data } = savedData;
       document.getElementById('title').value = title;
 
+      // set slider values
       const sliders = document.querySelectorAll('input[type="range"]');
       sliders.forEach(slider => {
         const sliderKey = getSliderKey(slider);
@@ -705,6 +662,7 @@
         }
       });
 
+      // set date/time
       const datePickers = document.querySelectorAll('.datetime-picker');
       datePickers.forEach((picker, idx) => {
         picker.value = data.datePickers[idx] || "";
@@ -733,6 +691,7 @@
         const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
         updateSliderValue(slider, valueElement);
       });
+
       const datePickers = document.querySelectorAll('.datetime-picker');
       datePickers.forEach(p => (p.value = ''));
     });
