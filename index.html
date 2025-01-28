@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Observation Boxes (Height=550, Larger Gap for Slider Labels)</title>
+  <title>Observation Boxes (550px Boxes, Larger Label Gap, Prefix Keys)</title>
 
-  <!-- Roboto font -->
+  <!-- Roboto font for readability -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link
+  <link 
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
     rel="stylesheet"
   />
 
   <style>
-    /* Basic reset & body */
+    /* Base reset & body */
     * {
       box-sizing: border-box;
     }
@@ -51,8 +51,6 @@
       border-radius: 6px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
-
-    /* Three groups in the requested order */
     .header .group-1,
     .header .group-2,
     .header .group-3 {
@@ -69,7 +67,7 @@
     .header input[type="text"] {
       font-size: 13px;
       padding: 6px;
-      width: 260px;
+      width: 160px;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
@@ -104,13 +102,15 @@
       gap: 12px;
       width: 100%;
     }
+
+    /* Force EXACT 550px height for each box */
     .box {
-      display: flex;             
+      display: flex;
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-start;
       width: 100%;
-      height: 550px;      
+      height: 550px;
       background: #fff;
       border-radius: 6px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
@@ -142,12 +142,12 @@
       margin-top: 4px;
     }
 
-    /* We'll distribute the sliders in leftover space via flex */
+    /* We wrap all sliders in a flex container that distributes them evenly */
     .sliders-wrapper {
-      flex: 1;  
+      flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly; /* distribute sliders vertically */
+      justify-content: space-evenly; /* space them evenly vertically */
       align-items: stretch;
       gap: 0;
     }
@@ -157,8 +157,8 @@
      ******************************************************/
     .slider-container {
       position: relative;
-      min-height: 45px; /* was 40px, now 45px to allow bigger gap */
-      margin: 0; 
+      min-height: 45px; /* ensures enough gap between slider line & bottom labels */
+      margin: 0;
     }
     .slider-title {
       position: absolute;
@@ -172,14 +172,14 @@
       padding: 0 2px;
     }
 
-    /* The green overlay is half the container (top:25%; bottom:25%) */
+    /* The green overlay from 25% -> 25% => half above, half below slider line */
     .ideal-range {
       position: absolute;
       top: 25%;
       bottom: 25%;
       left: 0;
       right: 0;
-      background-color: rgba(76,175,80,0.27);
+      background-color: rgba(76, 175, 80, 0.27);
       z-index: 5;
       pointer-events: none;
     }
@@ -228,13 +228,10 @@
       z-index: 999;
     }
 
-    /* 
-       The bottom labels are now pinned to bottom:0; 
-       so there's a bigger gap b/n handle & text 
-    */
+    /* Bottom labels pinned to bottom:0 => bigger gap b/n handle and text */
     .slider-labels {
       position: absolute;
-      bottom: 0; 
+      bottom: 0;
       left: 0;
       right: 0;
       display: flex;
@@ -249,30 +246,30 @@
 </head>
 <body>
   <div class="page-container">
-    <!-- 3 groups in the requested order:
-         1) Title label + Title + Save
-         2) DropDown + Retrieve
-         3) Clear + Delete
-    -->
+    <!-- Header with 3 groups in requested order -->
     <div class="header">
+      <!-- Group 1: Title label + Title input + Save button -->
       <div class="group-1">
         <label for="title">Title:</label>
         <input type="text" id="title" placeholder="Enter Title">
         <button id="saveButton">Save</button>
       </div>
+      <!-- Group 2: Dropdown + Retrieve -->
       <div class="group-2">
         <select id="savedDataList"></select>
         <button id="retrieveDataButton">Retrieve Data</button>
       </div>
+      <!-- Group 3: Clear Fields + Delete Data -->
       <div class="group-3">
         <button id="clearButton">Clear Fields</button>
         <button id="deleteDataButton">Delete Data</button>
       </div>
     </div>
 
-    <!-- Box Template -->
+    <!-- Template for one "Observation" box -->
     <template id="box-template">
       <div class="box">
+        <!-- The top portion with date/time -->
         <div class="box-header">
           <div class="box-header-title">
             Observation<span class="sequence-number">1</span>
@@ -283,7 +280,7 @@
           </div>
         </div>
 
-        <!-- Sliders are flexed to fill leftover vertical space -->
+        <!-- The main sliders area: 9 sliders spaced evenly -->
         <div class="sliders-wrapper">
           <!-- Temperature Slider -->
           <div class="slider-container">
@@ -296,9 +293,16 @@
                    width: calc((82 - 78) / (90 - 65) * 100%);
                  ">
             </div>
-            <input type="range" min="65" max="90" value="65"
-                   class="temperature-slider" step="1"
-                   data-ideal-min="78" data-ideal-max="82"/>
+            <input
+              type="range"
+              min="65"
+              max="90"
+              value="65"
+              class="temperature-slider"
+              step="1"
+              data-ideal-min="78"
+              data-ideal-max="82"
+            />
             <div class="slider-labels">
               <span>65°F</span>
               <span>70°F</span>
@@ -314,15 +318,23 @@
             <div class="slider-title">
               Time: <span class="time-value">0</span> hrs
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((3.5 - 0) / (8 - 0) * 100%);
-                   width: calc((4.5 - 3.5) / (8 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="8" value="0"
-                   class="time-slider" step="0.25"
-                   data-ideal-min="3.5" data-ideal-max="4.5"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((3.5 - 0) / (8 - 0) * 100%);
+                width: calc((4.5 - 3.5) / (8 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="8"
+              value="0"
+              class="time-slider"
+              step="0.25"
+              data-ideal-min="3.5"
+              data-ideal-max="4.5"
+            />
             <div class="slider-labels">
               <span>0 hrs</span>
               <span>1 hr</span>
@@ -336,20 +348,28 @@
             </div>
           </div>
 
-          <!-- Percent Rise -->
+          <!-- Percent Rise Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Percent Rise: <span class="percent-rise-value">0</span>%
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((20 - 0) / (100 - 0) * 100%);
-                   width: calc((30 - 20) / (100 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="100" value="0"
-                   class="percent-rise-slider" step="1"
-                   data-ideal-min="20" data-ideal-max="30"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((20 - 0) / (100 - 0) * 100%);
+                width: calc((30 - 20) / (100 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="percent-rise-slider"
+              step="1"
+              data-ideal-min="20"
+              data-ideal-max="30"
+            />
             <div class="slider-labels">
               <span>0%</span>
               <span>20%</span>
@@ -360,20 +380,28 @@
             </div>
           </div>
 
-          <!-- Domed on Top -->
+          <!-- Domed on Top Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Domed on Top: <span class="domed-on-top-value">Flat</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((1 - 0) / (4 - 0) * 100%);
-                   width: calc((3 - 1) / (4 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="4" value="0"
-                   class="domed-on-top-slider" step="0.01"
-                   data-ideal-min="1" data-ideal-max="3"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((1 - 0) / (4 - 0) * 100%);
+                width: calc((3 - 1) / (4 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="4"
+              value="0"
+              class="domed-on-top-slider"
+              step="0.01"
+              data-ideal-min="1"
+              data-ideal-max="3"
+            />
             <div class="slider-labels">
               <span>Flat</span>
               <span>Low</span>
@@ -382,20 +410,28 @@
             </div>
           </div>
 
-          <!-- Bubbles on Top -->
+          <!-- Bubbles on Top Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Bubbles on Top: <span class="bubbles-on-top-value">None</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((1 - 0) / (3 - 0) * 100%);
-                   width: calc((2 - 1) / (3 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="3" value="0"
-                   class="bubbles-on-top-slider" step="0.01"
-                   data-ideal-min="1" data-ideal-max="2"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((1 - 0) / (3 - 0) * 100%);
+                width: calc((2 - 1) / (3 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="3"
+              value="0"
+              class="bubbles-on-top-slider"
+              step="0.01"
+              data-ideal-min="1"
+              data-ideal-max="2"
+            />
             <div class="slider-labels">
               <span>None</span>
               <span>Few</span>
@@ -404,20 +440,28 @@
             </div>
           </div>
 
-          <!-- Bubbles on Sides -->
+          <!-- Bubbles on Sides Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Bubbles on Sides: <span class="bubbles-on-sides-value">None</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((1 - 0) / (3 - 0) * 100%);
-                   width: calc((2 - 1) / (3 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="3" value="0"
-                   class="bubbles-on-sides-slider" step="0.01"
-                   data-ideal-min="1" data-ideal-max="2"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((1 - 0) / (3 - 0) * 100%);
+                width: calc((2 - 1) / (3 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="3"
+              value="0"
+              class="bubbles-on-sides-slider"
+              step="0.01"
+              data-ideal-min="1"
+              data-ideal-max="2"
+            />
             <div class="slider-labels">
               <span>None</span>
               <span>Few</span>
@@ -426,20 +470,28 @@
             </div>
           </div>
 
-          <!-- Wobble Test -->
+          <!-- Wobble Test Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Wobble Test: <span class="wobble-test-value">Stiff</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((0.5 - 0) / (2 - 0) * 100%);
-                   width: calc((1.5 - 0.5) / (2 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="2" value="0"
-                   class="wobble-test-slider" step="0.01"
-                   data-ideal-min="0.5" data-ideal-max="1.5"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((0.5 - 0) / (2 - 0) * 100%);
+                width: calc((1.5 - 0.5) / (2 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="2"
+              value="0"
+              class="wobble-test-slider"
+              step="0.01"
+              data-ideal-min="0.5"
+              data-ideal-max="1.5"
+            />
             <div class="slider-labels">
               <span>Stiff</span>
               <span>Loose and Aerated</span>
@@ -447,20 +499,28 @@
             </div>
           </div>
 
-          <!-- Windowpane -->
+          <!-- Windowpane Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Windowpane: <span class="windowpane-value">Thick and Stiff</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((0.5 - 0) / (2 - 0) * 100%);
-                   width: calc((1.5 - 0.5) / (2 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="2" value="0"
-                   class="windowpane-slider" step="0.01"
-                   data-ideal-min="0.5" data-ideal-max="1.5"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((0.5 - 0) / (2 - 0) * 100%);
+                width: calc((1.5 - 0.5) / (2 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="2"
+              value="0"
+              class="windowpane-slider"
+              step="0.01"
+              data-ideal-min="0.5"
+              data-ideal-max="1.5"
+            />
             <div class="slider-labels">
               <span>Thick and Stiff</span>
               <span>Strong and Translucent</span>
@@ -468,20 +528,28 @@
             </div>
           </div>
 
-          <!-- Smell -->
+          <!-- Smell Slider -->
           <div class="slider-container">
             <div class="slider-title">
               Smell: <span class="smell-value">Floury</span>
             </div>
-            <div class="ideal-range"
-                 style="
-                   left: calc((1 - 0) / (4 - 0) * 100%);
-                   width: calc((3 - 1) / (4 - 0) * 100%);
-                 ">
-            </div>
-            <input type="range" min="0" max="4" value="0"
-                   class="smell-slider" step="0.01"
-                   data-ideal-min="1" data-ideal-max="3"/>
+            <div
+              class="ideal-range"
+              style="
+                left: calc((1 - 0) / (4 - 0) * 100%);
+                width: calc((3 - 1) / (4 - 0) * 100%);
+              "
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="4"
+              value="0"
+              class="smell-slider"
+              step="0.01"
+              data-ideal-min="1"
+              data-ideal-max="3"
+            />
             <div class="slider-labels">
               <span>Floury</span>
               <span>Ripe</span>
@@ -499,7 +567,12 @@
 
   <script>
     /**************************************************
-     * Arrays for special text-based slider values    *
+     * 1) Define a prefix so we only store keys like "MyApp_Something"
+     **************************************************/
+    const KEY_PREFIX = "MyApp_";
+
+    /**************************************************
+     * Arrays for text-based slider values
      **************************************************/
     const domedOnTopValues = ["Flat", "Low", "High", "Deflated"];
     const bubblesOnTopValues = ["None", "Few", "Many", "Deflated"];
@@ -518,14 +591,14 @@
       const idealMax = parseFloat(slider.getAttribute('data-ideal-max'));
       valueElement.innerText = slider.value;
 
-      // If outside ideal range => red, else green
+      // Thumb color: red if out of range, green if in range
       if (slider.value < idealMin || slider.value > idealMax) {
         slider.style.setProperty('--slider-thumb-color', 'red');
       } else {
         slider.style.setProperty('--slider-thumb-color', '#4CAF50');
       }
 
-      // For certain sliders, show descriptive text
+      // For certain sliders, replace numeric with text
       if (valueElement.classList.contains("domed-on-top-value")) {
         valueElement.innerText = domedOnTopValues[Math.round(slider.value)];
       } else if (valueElement.classList.contains("bubbles-on-top-value")) {
@@ -542,8 +615,7 @@
     }
 
     function initializeSlider(slider) {
-      const sliderKey = getSliderKey(slider);
-      const valueClass = sliderKey.replace("slider","value");
+      const valueClass = getSliderKey(slider).replace("slider","value");
       const valueElement = slider.parentElement.querySelector(`.${valueClass}`);
       if (!valueElement) return;
 
@@ -563,7 +635,7 @@
         clone.querySelector('.sequence-number').innerText = i + 1;
         container.appendChild(clone);
 
-        // rename each slider class
+        // rename each slider class in this box
         const thisBox = container.querySelectorAll('.box')[i];
         const rangeInputs = thisBox.querySelectorAll('input[type="range"]');
         rangeInputs.forEach(rng => {
@@ -586,31 +658,38 @@
       const allSliders = document.querySelectorAll('input[type="range"]');
       allSliders.forEach(initializeSlider);
 
+      // Load any localStorage data
       loadSavedDataNames();
     });
 
     /**************************************************
-     *   Save, Retrieve, Delete (localStorage)
+     *   Save, Retrieve, Delete (localStorage) 
+     *   with a "MyApp_" prefix for keys
      **************************************************/
     function saveSliderData() {
-      const title = document.getElementById('title').value.trim();
-      if (!title) {
+      const userTitle = document.getElementById('title').value.trim();
+      if (!userTitle) {
         alert("Please enter a title before saving.");
         return;
       }
+
+      // 1) Build the prefixed key
+      const storageKey = KEY_PREFIX + userTitle;
+
+      // 2) Gather slider data
       const sliders = document.querySelectorAll('input[type="range"]');
       const datePickers = document.querySelectorAll('.datetime-picker');
       const data = { sliders: {}, datePickers: [] };
 
       sliders.forEach(slider => {
-        const sliderKey = getSliderKey(slider);
-        data.sliders[sliderKey] = slider.value;
+        data.sliders[getSliderKey(slider)] = slider.value;
       });
       datePickers.forEach(picker => {
         data.datePickers.push(picker.value);
       });
 
-      localStorage.setItem(title, JSON.stringify({ title, data }));
+      // 3) Save with the prefixed key
+      localStorage.setItem(storageKey, JSON.stringify({ title: userTitle, data }));
       alert("Data saved!");
       loadSavedDataNames();
     }
@@ -618,17 +697,27 @@
     function loadSavedDataNames() {
       const savedDataList = document.getElementById('savedDataList');
       savedDataList.innerHTML = "";
+
+      // "Select One" at the top
       const defaultOption = document.createElement('option');
       defaultOption.value = "";
       defaultOption.textContent = "Select One";
       savedDataList.appendChild(defaultOption);
 
+      // Only show keys that start with our prefix
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key !== null) {
+        if (key.startsWith(KEY_PREFIX)) {
+          // Display the stripped title in the dropdown
+          const strippedTitle = key.slice(KEY_PREFIX.length); // remove "MyApp_"
           const option = document.createElement('option');
+
+          // The user sees the stripped name
+          option.textContent = strippedTitle;
+
+          // But we store the full key in .value for retrieval
           option.value = key;
-          option.textContent = key;
+
           savedDataList.appendChild(option);
         }
       }
@@ -640,15 +729,16 @@
         alert("Please select a data set to load.");
         return;
       }
+
       const savedDataJSON = localStorage.getItem(selectedKey);
       if (!savedDataJSON) {
-        alert("No data found for the selected title.");
+        alert("No data found for the selected key.");
         return;
       }
 
       const savedData = JSON.parse(savedDataJSON);
       const { title, data } = savedData;
-      document.getElementById('title').value = title;
+      document.getElementById('title').value = title; // show user the original title
 
       // set slider values
       const sliders = document.querySelectorAll('input[type="range"]');
@@ -662,7 +752,7 @@
         }
       });
 
-      // set date/time
+      // set date/time fields
       const datePickers = document.querySelectorAll('.datetime-picker');
       datePickers.forEach((picker, idx) => {
         picker.value = data.datePickers[idx] || "";
@@ -680,9 +770,13 @@
       loadSavedDataNames();
     }
 
+    /**************************************************
+     *   Button Listeners
+     **************************************************/
     document.getElementById('saveButton').addEventListener('click', saveSliderData);
     document.getElementById('retrieveDataButton').addEventListener('click', loadSliderData);
     document.getElementById('deleteDataButton').addEventListener('click', deleteSliderData);
+
     document.getElementById('clearButton').addEventListener('click', () => {
       const sliders = document.querySelectorAll('input[type="range"]');
       sliders.forEach(slider => {
@@ -693,7 +787,7 @@
       });
 
       const datePickers = document.querySelectorAll('.datetime-picker');
-      datePickers.forEach(p => (p.value = ''));
+      datePickers.forEach(dp => (dp.value = ''));
     });
   </script>
 </body>
